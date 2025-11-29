@@ -10,11 +10,11 @@
 ## Method Overview
 
 ### Basic Model 
-<img src="figures/Pipeline.png" width="400">
+<img src="figures/Pipeline.png" width="750">
 
 
 ### Teacher-Student Model Structure
-![](figures/Teacher-Student-Structure.png)
+<img src="figures/Teacher-Student-Structurepng" width="800">
 
 
 
