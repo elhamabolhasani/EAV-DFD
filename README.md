@@ -10,7 +10,8 @@
 ## Method Overview
 
 ### Basic Model 
-![](figures/Pipeline.png){width=400px}
+<img src="figures/Pipeline.png" width="400">
+
 
 ### Teacher-Student Model Structure
 ![](figures/Teacher-Student-Structure.png)
