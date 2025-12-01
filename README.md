@@ -16,19 +16,20 @@
 ### Teacher-Student Model Structure
 <img src="figures/Teacher-Student-Structure.png" width="800">
 
+### Download model
+Here is the [link](https://drive.google.com/file/d/1prlLtLJuPdl2R5aq2AD6pLWTgbync68d/view?usp=sharing)  for teacher model.
+
+This project incorporates adapted components from several open-source implementations, including the preprocessing module from Wav2Lip [link](https://github.com/Rudrabha/Wav2Lip/blob/master/preprocess.py), audio-visual sub-network elements from the Vocalist repository [link](https://github.com/vskadandale/vocalist), and the visual sub-network from the MCX implementation [link](https://github.com/xuyingzhongguo/MCX-API/tree/master).
+
 
 
 ## Citation
 If you find _EAV-DFD_ useful in your project, please cite our work:
 ```
 @article{
-      ?,
       title={Teacher-Student Structure for Domain Adaptation in  Ensemble Audio-Visual Video Deepfake Detection}, 
       author={ Elham Abolhasani, Maryam Ramezani and Hamid R. Rabiee},
-      year={2026},
-      <!-- eprint={2412.04440},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2412.04440},  -->
+      year={2026}
 }
 ```
+
