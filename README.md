@@ -5,8 +5,6 @@
 <a href='https://elhamabolhasani.github.io/EAV-DFD/'><img src='https://img.shields.io/badge/Project-Page-Green'></a>
 
 
-**Code will come soon.**
-
 ## Method Overview
 
 ### Basic Model 
@@ -19,7 +17,7 @@
 ### Download model
 Here is the [link](https://drive.google.com/file/d/1prlLtLJuPdl2R5aq2AD6pLWTgbync68d/view?usp=sharing)  for teacher model.
 
-This project incorporates adapted components from several open-source implementations, including the preprocessing module from Wav2Lip [link](https://github.com/Rudrabha/Wav2Lip/blob/master/preprocess.py), audio-visual sub-network elements from the Vocalist repository [link](https://github.com/vskadandale/vocalist), and the visual sub-network from the MCX implementation [link](https://github.com/xuyingzhongguo/MCX-API/tree/master).
+This project incorporates adapted components from several open-source implementations, including the preprocessing module from [Wav2Lip](https://github.com/Rudrabha/Wav2Lip/blob/master/preprocess.py), audio-visual sub-network elements from the [Vocalist repository](https://github.com/vskadandale/vocalist), and the visual sub-network from the [MCX implementation](https://github.com/xuyingzhongguo/MCX-API/tree/master).
 
 
 
