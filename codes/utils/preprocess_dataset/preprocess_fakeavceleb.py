@@ -49,21 +49,6 @@ def get_label(type):
         return 'fake'
 
 
-def make_dataset(meta_data, kind):
-    if kind == 'train':
-        make_dataset_folders(config.train_dir)
-        data_dir = config.train_dir
-    else:
-        make_dataset_folders(config.test_dir)
-        data_dir = config.test_dir
-
-    for index, row in meta_data.iterrows():
-        video_path = os.path.join(config.dataset_root, row['video_path'])
-        label = get_label(row['type'])
-        os.makedirs(os.path.join(data_dir, row['video_dir_name']))
-        shutil.copyfile(video_path, os.path.join(data_dir, row['video_dir_name'], row['video_dir_name'] + '.mp4'))
-
-
 def make_fakeavceleb_dataset(meta_data):
     data_dir = config.fakeavceleb_dataset
     for index, row in meta_data.iterrows():
@@ -74,6 +59,7 @@ def make_fakeavceleb_dataset(meta_data):
 
 
 def main():
+    # First run this part
     meta_data = pd.read_csv(config.fake_av_celeb_meta_data)
     meta_data['video_path'] = meta_data[['Unnamed: 9', 'path']].agg('/'.join, axis=1)
     meta_data['name_columns'] = meta_data[['method', 'Unnamed: 9', 'path']].agg('/'.join, axis=1)
@@ -83,14 +69,9 @@ def main():
 
     make_fakeavceleb_dataset(meta_data)
 
-    # print('split train and test ...')
-    # meta_data_train, meta_data_test, meta_data_val = split_train_test(meta_data)
-    # print('make train dataset ...')
-    # make_dataset(meta_data_train, 'train')
-    # print('make val dataset ...')
-    # make_dataset(meta_data_val, 'val')
-    # print('make test dataset ...')
-    # make_dataset(meta_data_test, 'test')
+    # Second run preprocess file preprosess.py on fakeavceleb_dataset
+    print('split train and test ...')
+    meta_data_train, meta_data_test, meta_data_val = split_train_test(meta_data)
 
 
 if __name__ == "__main__":

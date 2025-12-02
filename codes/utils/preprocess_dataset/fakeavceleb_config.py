@@ -7,10 +7,10 @@ class Config:
     fakeavceleb_dataset = dataset_root + 'fakeavceleb_dataset/'
     preprocess_dataset = dataset_root + 'preprocessed_fakeavceleb/'
 
-    vocalist_dataset = dataset_root + ''
-    vocalist_dataset_val = vocalist_dataset + 'val/'
-    vocalist_dataset_train = vocalist_dataset + 'train/'
-    vocalist_dataset_test = vocalist_dataset + 'test/'
+    # vocalist_dataset = dataset_root + ''
+    # vocalist_dataset_val = vocalist_dataset + 'val/'
+    # vocalist_dataset_train = vocalist_dataset + 'train/'
+    # vocalist_dataset_test = vocalist_dataset + 'test/'
 
     ensemble_dataset = dataset_root + 'ensemble_dataset/'
     ensemble_dataset_val = ensemble_dataset + 'val/'

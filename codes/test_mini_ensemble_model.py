@@ -32,7 +32,7 @@ def save_embeddings(embeddings, save_path):
 
 
 def eval_model(test_data_loader, model_config, device, model, params, writer, epoch=0,
-               in_test=True, store_embeddings=False, embedding_save_path=None):
+               store_embeddings=False, embedding_save_path=None):
 
     preds = []
     probs = []
@@ -148,15 +148,12 @@ if __name__ == "__main__":
 
     run_name = (
         'mini_b24_v20_400ne_mean_clip_prob_lr0.0001_optimizer(adam0)_scheduler(step_lr0.8-15)_and_(aug_4)_w3.0_1_c_loss_0.005/'  
-        # +
-        # 'MM_b24_v20_82ne_mcx_lr0.0001_optimizer(adam0)_scheduler(step_lr0.8-15)_(joint)_(aug)_stu_mode_ce(0.25)_(5)_jl_mse_dav'  
     )
     model_name = 'checkpoint_step000000100.pth'  
     checkpoint_path = os.path.join(model_root_path, run_name, model_name)
     kind = 'main'  # main , student
 
-    from teacher_model_tensorboard.mini_model_config import model_config
-    # from student_model_tensorboard.model_config import model_config
+    from models.ensemble_model.mini_model_config import model_config
     
     # ..........................  import dataset that you want to test.....................................
     train_dataset_name = 'fakeavceleb'
@@ -191,16 +188,9 @@ if __name__ == "__main__":
 
     # model
     model = MiniEavNet(model_config)
-    print('total trainable params {}'.format(sum(p.numel() for p in model.parameters())))
-    print('total audio trainable params {}'.format(sum(p.numel() for p in model.a_model.parameters())))
-    print('total audio trainable params {}'.format(sum(p.numel() for p in model.a_classifier.parameters())))
-    print('total video trainable params {}'.format(sum(p.numel() for p in model.v_model.parameters())))
-    print('total video trainable params {}'.format(sum(p.numel() for p in model.v_classifier.parameters())))
-    print('total audio-visual trainable params {}'.format(sum(p.numel() for p in model.av_model.parameters())))
     model = model.to(device)
     model, last_epoch, best_auc = load_checkpoint(checkpoint_path, model, kind=kind)
     model = model.to(device)
-    print('last_epoch: ', last_epoch)
 
     # parameters
     params = {

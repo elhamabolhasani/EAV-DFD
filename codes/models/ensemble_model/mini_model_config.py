@@ -93,7 +93,7 @@ class Config:
     label_kind = 'and' # 'majority', 'and'
     test_strategy = 'mean_clip_prob'  
     freeze = False
-    classifier_type = 'joint'  # 'split', 'joint'
+    classifier_type = 'split'  # 'split', 'joint'
     batch_size = 24  # 128
     optimizer = 'adam'  #
     weight_decay = 0  # set to 0 for off
