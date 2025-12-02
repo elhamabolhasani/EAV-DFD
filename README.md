@@ -8,7 +8,7 @@
 ## Method Overview
 
 ### Basic Model 
-<img src="figures/Pipeline.png" width="700">
+<img src="figures/Pipeline.png" width="650">
 
 
 ### Teacher-Student Model Structure
