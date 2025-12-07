@@ -1,7 +1,6 @@
 from torch import nn
 from models.audio_model.audio_model import HubertModel
 from models.mcx_model.visual_models import API_Net
-from models.visual_model.vivid_model import ViViT
 from models.vocalist.voca_model.model import SyncTransformer as LargeSyncTransformer
 from models.vocalist.voca_model.student_model import SyncTransformer as DistillSyncTransformer
 import os
