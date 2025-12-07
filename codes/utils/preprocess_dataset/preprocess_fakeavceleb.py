@@ -58,6 +58,17 @@ def make_fakeavceleb_dataset(meta_data):
         shutil.copyfile(video_path, os.path.join(data_dir, row['video_dir_name'], row['video_dir_name'] + '.mp4'))
 
 
+def make_dataset_ensemble(meta_data, kind):
+    data_dir = os.path.join(config.ensemble_dataset, kind)
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+
+    for index, row in meta_data.iterrows():
+        video_dir = os.path.join(config.preprocess_dataset, row['video_dir_name'])
+        if os.path.exists(video_dir):
+            shutil.copytree(video_dir, os.path.join(data_dir, row['video_dir_name']))
+
+
 def main():
     # First run this part
     meta_data = pd.read_csv(config.fake_av_celeb_meta_data)
@@ -70,8 +81,13 @@ def main():
     make_fakeavceleb_dataset(meta_data)
 
     # Second run preprocess file preprosess.py on fakeavceleb_dataset
+
+    # Third split to train, test, and val
     print('split train and test ...')
     meta_data_train, meta_data_test, meta_data_val = split_train_test(meta_data)
+    make_dataset_ensemble(meta_data_train, 'train')
+    make_dataset_ensemble(meta_data_test, 'test')
+    make_dataset_ensemble(meta_data_val, 'val')
 
 
 if __name__ == "__main__":
