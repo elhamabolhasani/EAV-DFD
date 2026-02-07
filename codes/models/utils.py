@@ -201,7 +201,6 @@ def prepare_model_input(aud_av, vid_av, aud_a, vid_v, device, model_config, kind
             # Simulate video compression artifacts
             import cv2
             quality = 50
-            print(vid_av.shape)
             batch_size, num_frames, channels, height, width = vid_av.shape
             for b in range(batch_size):
                 for f in range(num_frames):
@@ -473,6 +472,7 @@ def find_final_clips_prob(final_probs, a_probs_clip, v_probs_clip, av_probs_clip
     v_pred = find_final_clips_label(v_est_label, real_ratio)
     a_pred = find_final_clips_label(a_est_label, real_ratio)
     av_pred = find_final_clips_label(av_est_label, real_ratio)
+    final_label = find_final_clips_label(final_est_label, real_ratio)
 
     kind = 'mean_clip_prob'
     final_prob = find_prob_based_on_label(final_label, final_probs, final_est_label, kind)

@@ -7,7 +7,7 @@ class TsConfig:
     student_model = 'MiniEavNet'  # ['EavNet', 'MiniEavNet']
 
     # teacher_pretrained_model_path = it will be best model path of model_config file
-    model_root_path = '/models/teacher_model_fakeavceleb/'
+    model_root_path = '/weights/teacher_model_fakeavceleb/'
 
 
     run_name = 'mini_b24_v20_400ne_mean_clip_prob_lr0.0001_optimizer(adam0)_scheduler(step_lr0.8-15)_and_(aug_4)_w3.0_1_c_loss_0.005'

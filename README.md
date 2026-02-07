@@ -65,10 +65,17 @@ python test_min_ensemble_model.py
 ## Citation
 If you find _EAV-DFD_ useful in your project, please cite our work:
 ```
-@article{
-      title={Teacher-Student Structure for Domain Adaptation in  Ensemble Audio-Visual Video Deepfake Detection}, 
-      author={ Elham Abolhasani, Maryam Ramezani, and Hamid R. Rabiee},
-      year={2026}
+
+@article{abolhasani2025teacher,
+  title={Teacher-Student Structure for Domain Adaptation in Ensemble Audio-Visual Video Deepfake Detection},
+  author={Abolhasani, Elham and Ramezani, Maryam and Rabieei, Hamid R},
+  journal={IEEE Transactions on Artificial Intelligence},
+  year={2025},
+  publisher={IEEE}
 }
+
+
+
+
 ```
 

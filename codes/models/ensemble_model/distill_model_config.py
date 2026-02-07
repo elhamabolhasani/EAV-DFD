@@ -5,7 +5,7 @@ from models.utils import config
 class Config:
     #  model dirs
     config_file_path = '/models/ensemble_model/mini_model_config.py'
-    config_file_name = 'model_config.py'
+    config_file_name = 'mini_model_config.py'
     models_root = '/deepfake_models/'
     checkpoint_path = models_root + 'ensemble/'
     tensorboard_path = '/deepfake_project/ensemble_model_tensorboard/'

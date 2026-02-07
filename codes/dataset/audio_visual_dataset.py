@@ -543,6 +543,5 @@ class TestDataset(Dataset):
 
             selected_clip += 1
 
-
         return (torch.stack(v_clips), torch.stack(av_clips), torch.stack(av_audio_elements),
                 torch.stack(a_audio_elements), av_labels[0], v_labels[0], a_labels[0], vidname)

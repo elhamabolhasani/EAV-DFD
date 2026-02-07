@@ -70,7 +70,7 @@ def make_dataset_ensemble(meta_data, kind):
 
 
 def main():
-    # First run this part
+
     meta_data = pd.read_csv(config.fake_av_celeb_meta_data)
     meta_data['video_path'] = meta_data[['Unnamed: 9', 'path']].agg('/'.join, axis=1)
     meta_data['name_columns'] = meta_data[['method', 'Unnamed: 9', 'path']].agg('/'.join, axis=1)
@@ -78,16 +78,17 @@ def main():
     if not os.path.exists(config.fakeavceleb_dataset):
         os.makedirs(config.fakeavceleb_dataset)
 
+    # First run this part
     make_fakeavceleb_dataset(meta_data)
 
     # Second run preprocess file preprosess.py on fakeavceleb_dataset
 
     # Third split to train, test, and val
-    print('split train and test ...')
-    meta_data_train, meta_data_test, meta_data_val = split_train_test(meta_data)
-    make_dataset_ensemble(meta_data_train, 'train')
-    make_dataset_ensemble(meta_data_test, 'test')
-    make_dataset_ensemble(meta_data_val, 'val')
+    # print('split train and test ...')
+    # meta_data_train, meta_data_test, meta_data_val = split_train_test(meta_data)
+    # make_dataset_ensemble(meta_data_train, 'train')
+    # make_dataset_ensemble(meta_data_test, 'test')
+    # make_dataset_ensemble(meta_data_val, 'val')
 
 
 if __name__ == "__main__":

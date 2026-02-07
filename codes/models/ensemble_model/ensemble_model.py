@@ -19,8 +19,10 @@ class EavNet(nn.Module):
         # fake = 0 , real = 1
         self.num_classes = 2
         self.av_model = LargeSyncTransformer()
-        checkpoint = torch.load(model_config.pretrained_av_path)
-        self.av_model.load_state_dict(checkpoint["state_dict"])
+
+        if model_config.mode != 'test':
+            checkpoint = torch.load(model_config.pretrained_av_path)
+            self.av_model.load_state_dict(checkpoint["state_dict"])
         if model_config.visual_model_type == 'vivit':
             self.v_model = ViViT(
                 image_size=model_config.v_img_size,  # image size
@@ -42,8 +44,11 @@ class EavNet(nn.Module):
                                    weight_init=model_config.weight_init,
                                    )
             self.v_model.conv = nn.DataParallel(self.v_model.conv, device_ids=[model_config.device_id])
-            checkpoint = torch.load(model_config.pretrained_v_path)
-            self.v_model.load_state_dict(checkpoint['state_dict'])
+
+            if model_config.mode != 'test':
+                checkpoint = torch.load(model_config.pretrained_v_path)
+                self.v_model.load_state_dict(checkpoint['state_dict'])
+
             if hasattr(model_config, 'freeze') and model_config.freeze == True:
                 for param in self.v_model.conv.parameters():
                     param.requires_grad = False
@@ -149,8 +154,10 @@ class MiniEavNet(nn.Module):
         self.num_classes = 2
         self.av_model = DistillSyncTransformer(d_model=200)
 
-        checkpoint = torch.load(model_config.pretrained_av_path)
-        self.av_model.load_state_dict(checkpoint["state_dict"])
+        if model_config.mode != 'test':
+            print(model_config.mode)
+            checkpoint = torch.load(model_config.pretrained_av_path)
+            self.av_model.load_state_dict(checkpoint["state_dict"])
 
         if hasattr(model_config, 'simple_av') and model_config.simple_av is True:
             # We'll calculate the actual input dimension dynamically in forward pass
@@ -196,14 +203,17 @@ class MiniEavNet(nn.Module):
                                    weight_init=model_config.weight_init,
                                    )
             self.v_model.conv = nn.DataParallel(self.v_model.conv, device_ids=[model_config.device_id])
-            checkpoint = torch.load(model_config.pretrained_v_path)
-            self.v_model.load_state_dict(checkpoint['state_dict'])
+
+            if model_config.mode != 'test':
+                checkpoint = torch.load(model_config.pretrained_v_path)
+                self.v_model.load_state_dict(checkpoint['state_dict'])
+
             if hasattr(model_config, 'freeze') and model_config.freeze is True:
                 for param in self.v_model.conv.parameters():
                     param.requires_grad = False
 
         self.a_model = HubertModel(model_config.audio_model_checkpoint_path, self.num_classes)
-        if hasattr(model_config, 'audio_pretrained_distill_model_path'):
+        if hasattr(model_config, 'audio_pretrained_distill_model_path') and model_config.mode != 'test':
             checkpoint = torch.load(model_config.audio_pretrained_distill_model_path)
             self.a_model.load_state_dict(checkpoint["state_dict"])
         if hasattr(model_config, 'freeze') and model_config.freeze is True:

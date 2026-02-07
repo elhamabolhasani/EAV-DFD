@@ -40,8 +40,8 @@ template = 'ffmpeg -loglevel panic -y -i {} -strict -2 {}'
 
 def process_video_file(vfile, args, gpu_id):
     vidname = os.path.basename(vfile).split('.')[0]
-    dirname = vfile.split('/')[-2]
-    fulldir = path.join(args.preprocessed_root, dirname, vidname)
+    dirname = vfile.split('/')[-1]
+    fulldir = path.join(args.preprocessed_root, vidname)
     if os.path.exists(fulldir) and len(os.listdir(fulldir)) > 1:
         return
 
@@ -80,16 +80,20 @@ def process_audio_file(vfile, args):
     vidname = os.path.basename(vfile).split('.')[0]
     dirname = vfile.split('/')[-2]
 
-    fulldir = path.join(args.preprocessed_root, dirname, vidname)
+    fulldir = path.join(args.preprocessed_root, vidname)
     # os.makedirs(fulldir, exist_ok=True)
+    print(fulldir)
 
     wavpath = path.join(fulldir, 'audio.wav')
 
-    command = ("ffmpeg -hide_banner -loglevel panic -threads 1 -y -i %s -async 1 -ac 1 -vn -acodec pcm_s16le -ar 16000 %s" % (
-        vfile, wavpath))
-    output = subprocess.call(command, shell=True, stdout=None)
+    """use one of the following code parts"""
+    # command = ("ffmpeg -hide_banner -loglevel panic -threads 1 -y -i %s -async 1 -ac 1 -vn -acodec pcm_s16le -ar "
+    #            "16000 %s" % (vfile, wavpath))
+    # output = subprocess.run(command, shell=True, stdout=None)
 
-    # subprocess.run(['ffmpeg', '-loglevel',  'panic',  '-y', '-i', vfile, '-strict', str(-2), wavpath], shell=True)
+    subprocess.run(
+        ["ffmpeg", "-hide_banner", "-loglevel", "panic", "-threads", "1", "-y", "-i", vfile, "-map_channel", "0.1.0",
+         "-vn", "-acodec", "pcm_s16le", "-ar", "16000", wavpath], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 def mp_handler(job):
@@ -105,6 +109,7 @@ def mp_handler(job):
 def main(args):
     print('Started processing for {} with {} GPUs'.format(args.data_root, args.ngpu))
     filelist = glob(args.data_root + '*/*.mp4')
+    print(filelist)
     # filelist = glob(args.data_root + '0_low*/*.avi')
     jobs = [(vfile, args, i % args.ngpu) for i, vfile in enumerate(filelist)]
     print(jobs[0])

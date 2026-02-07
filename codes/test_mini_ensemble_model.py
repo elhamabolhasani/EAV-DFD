@@ -7,7 +7,7 @@ from sklearn.metrics import f1_score, roc_curve, auc, classification_report
 import os, random
 import torch.multiprocessing
 from torch.utils.tensorboard import SummaryWriter
-from dataset.test_dataset import TestDataset
+from dataset.audio_visual_dataset import TestDataset
 from models.utils import *
 import shutil
 import time
@@ -22,8 +22,6 @@ use_cuda = torch.cuda.is_available()
 print('use_cuda: {}'.format(use_cuda))
 
 
-
-
 def save_embeddings(embeddings, save_path):
     """Save embeddings to a pickle file."""
     with open(save_path, 'wb') as f:
@@ -33,7 +31,6 @@ def save_embeddings(embeddings, save_path):
 
 def eval_model(test_data_loader, model_config, device, model, params, writer, epoch=0,
                store_embeddings=False, embedding_save_path=None):
-
     preds = []
     probs = []
     labels = []
@@ -75,8 +72,9 @@ def eval_model(test_data_loader, model_config, device, model, params, writer, ep
 
             # eval model
             num_clip = min(model_config.num_clip_check, int(vid_av.shape[0]))
-            v_outputs, av_outputs, a_outputs, v_hidden, feature_list, a_hidden, av_hidden = model(vid_v, vid_av, mels, aud_a)
-        
+            v_outputs, av_outputs, a_outputs, v_hidden, feature_list, a_hidden, av_hidden = model(vid_v, vid_av, mels,
+                                                                                                  aud_a)
+
             # store embeddings if requested
             if store_embeddings:
                 stored_embeddings['a_hidden'].append(a_hidden.detach().cpu().numpy())
@@ -102,8 +100,7 @@ def eval_model(test_data_loader, model_config, device, model, params, writer, ep
             probs.append(final_prob)
             labels.append(y_av.squeeze(0)[0].item())  # all clips have the same label
 
-
-            if model_config.test_dataset_name == 'fakeavceleb' or model_config.test_dataset_name == 'test_polyglotfake' :
+            if model_config.test_dataset_name == 'fakeavceleb' or model_config.test_dataset_name == 'test_polyglotfake':
                 v_preds.append(v_pred)
                 v_probs.append(v_prob)
 
@@ -117,8 +114,6 @@ def eval_model(test_data_loader, model_config, device, model, params, writer, ep
                 a_target_labels.append(y_a[0][0].item())
                 av_target_labels.append(y_av[0][0].item())
 
-    
-    
     try:
         report = classification_report(labels, preds, target_names=['fake', 'real'], output_dict=True)
         print(classification_report(labels, preds, target_names=['fake', 'real']))
@@ -143,21 +138,20 @@ if __name__ == "__main__":
     """"   check the following params before testing   """
 
     # ............................. set checkpoint path ..............................
-    model_root_path = 'models/teacher_model_fakeavceleb/'
-    # model_root_path = 'models/student_model/'
+    model_root_path = 'weights/teacher_model_fakeavceleb/'
 
     run_name = (
-        'mini_b24_v20_400ne_mean_clip_prob_lr0.0001_optimizer(adam0)_scheduler(step_lr0.8-15)_and_(aug_4)_w3.0_1_c_loss_0.005/'  
+        'mini_b24_v20_400ne_mean_clip_prob_lr0.0001_optimizer(adam0)_scheduler(step_lr0.8-15)_and_(aug_4)_w3.0_1_c_loss_0.005/'
     )
-    model_name = 'checkpoint_step000000100.pth'  
+    model_name = 'checkpoint_step000000100.pth'
     checkpoint_path = os.path.join(model_root_path, run_name, model_name)
     kind = 'main'  # main , student
 
     from models.ensemble_model.mini_model_config import model_config
-    
+
     # ..........................  import dataset that you want to test.....................................
     train_dataset_name = 'fakeavceleb'
-    test_dataset_name = 'fakeavceleb'  
+    test_dataset_name = 'fakeavceleb'
     # .............................. import test params ..................................................
     num_clip_check = 7
     model_config.num_clip_check = num_clip_check
@@ -167,16 +161,17 @@ if __name__ == "__main__":
     test_tensorboard_dir = os.path.join(model_config.tensorboard_path, 'test_results')
     writer = SummaryWriter(log_dir=test_tensorboard_dir)
 
-
     from utils.preprocess_dataset.fakeavceleb_config import config
+
     if test_dataset_name == 'fakeavceleb':
         model_config.test_data_root = config.ensemble_dataset_test
-    elif test_dataset_name == 'vid_df_timit':
-        model_config.test_data_root = cross_data_config.preprocess_dataset
-    elif test_dataset_name == 'dfdc':
-        model_config.test_data_root = dfdc_config.preprocess_dataset
+    # elif test_dataset_name == 'vid_df_timit':
+    #     model_config.test_data_root = cross_data_config.preprocess_dataset
+    # elif test_dataset_name == 'dfdc':
+    #     model_config.test_data_root = dfdc_config.preprocess_dataset
 
     model_config.test_dataset_name = test_dataset_name
+    model_config.mode = 'test'
 
     # dataset and dataloader setup
     test_dataset = TestDataset('test', model_config)
@@ -206,15 +201,14 @@ if __name__ == "__main__":
         'total_trainable_parameters': sum(p.numel() for p in model.parameters() if p.requires_grad),
         'num_clip_check': num_clip_check,
         'real_ratio': model_config.real_ratio,
-        'test_strategy': model_config.test_strategy,
         'kind': kind
     }
 
     with torch.no_grad():
         start_time = time.time()
-        store_embeddings_flag = False  
+        store_embeddings_flag = False
         embedding_save_path = f'embeddings_run_student.pkl'
-        
-        auc_metric = eval_model(test_data_loader, model_config, device, model, params, writer, 
-                               store_embeddings=store_embeddings_flag, embedding_save_path=embedding_save_path)
+
+        auc_metric = eval_model(test_data_loader, model_config, device, model, params, writer,
+                                store_embeddings=store_embeddings_flag, embedding_save_path=embedding_save_path)
         print("--- %s seconds ---" % (time.time() - start_time))

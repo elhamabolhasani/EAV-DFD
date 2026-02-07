@@ -2,15 +2,10 @@ import os
 
 
 class Config:
-    dataset_root = ''
-    fake_av_celeb_meta_data = ''
+    dataset_root = 'C:/Users/Elham/Desktop/Github Codes/deepfake_detection_project/'
+    fake_av_celeb_meta_data = dataset_root + 'FakeAVCeleb/meta_data.csv'
     fakeavceleb_dataset = dataset_root + 'fakeavceleb_dataset/'
     preprocess_dataset = dataset_root + 'preprocessed_fakeavceleb/'
-
-    # vocalist_dataset = dataset_root + ''
-    # vocalist_dataset_val = vocalist_dataset + 'val/'
-    # vocalist_dataset_train = vocalist_dataset + 'train/'
-    # vocalist_dataset_test = vocalist_dataset + 'test/'
 
     ensemble_dataset = dataset_root + 'ensemble_dataset/'
     ensemble_dataset_val = ensemble_dataset + 'val/'
